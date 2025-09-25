@@ -23,4 +23,10 @@ class Ficha:
         Valida primero si la posición es correcta.
         - devuelve: El objeto retornado por el tablero si es válida, None si no se añade.
         """
-        pass
+        
+        if not self.tablero.validar_posicion(self.x, self.y):
+            return None
+        resultado = self.tablero.recibir_pieza(self, self.x, self.y)
+        if resultado:
+            return resultado
+        return None
