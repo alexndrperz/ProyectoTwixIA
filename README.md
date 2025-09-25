@@ -14,7 +14,7 @@ El juego se ejecuta en Python y renderiza el estado del tablero en texto, permit
 
 Es el primer examen parcial de la materia de Inteligencia Artificial impartida por el profesor **Carlos Bienvenido Ogando Montas**.
 
-## 👤 Autor
+## 👤 Autores
 - Equipo (5 participantes):
 - **Christian Gil** – **2012-1036**
 - Integrante 2 – Matrícula
@@ -25,7 +25,7 @@ Es el primer examen parcial de la materia de Inteligencia Artificial impartida p
 ## 📸 Capturas de Pantalla
 A continuación, se muestran capturas del juego ejecutándose en consola:
 
-1. ![Captura 1](/img/twixt1.png)
+1. ![Captura 1](/imgs/twixt1.png)
 
 ## 🚀 Instrucciones de Uso
 1. 🛠️ Clona este repositorio.
