@@ -8,7 +8,7 @@ class Muralla:
     Representa una muralla que conecta dos fichas.
     """
 
-    def __init__(self, tablero: Tablero, ficha1: Ficha, ficha2: Ficha):
+    def __init__(self, tablero: Tablero, x: str, y: int, derecha: bool):
         """
         Inicializa una muralla con el tablero y las dos fichas.
         - parametro tablero: Objeto Tablero.
@@ -16,8 +16,9 @@ class Muralla:
         - parametro ficha2: Objeto Ficha 2.
         """
         self.tablero = tablero
-        self.ficha1 = ficha1
-        self.ficha2 = ficha2
+        self.simbolo = "↘ " if derecha  else "↙ "  
+        self.x = x
+        self.y = y
 
     def anadir_muralla(self) -> bool:
         """
@@ -25,4 +26,6 @@ class Muralla:
         Define la dirección ("/" o "\\") según la posición de las fichas.
         - devuelve: True si la muralla se añadió correctamente, False si no.
         """
-        pass
+        resultado = self.tablero.recibir_pieza(self, False)
+        if resultado:
+            return resultado
