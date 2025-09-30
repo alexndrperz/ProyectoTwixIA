@@ -38,13 +38,13 @@ class Tablero:
         Valida si la posición (x, y) es válida para colocar ficha o muralla.
         """
 
-
+        print(x, y, es_muralla)
         if x not in self.filas:
-            print(self.filas)
+            print(x, "no")
             return False
         
         if y not in self.columnas:
-            print(self.columnas)
+            print("noy")
             return False
 
         
@@ -92,7 +92,9 @@ class Tablero:
         """
         Recibe una pieza (ficha o muralla) para añadirla al tablero.
         """
+        # print(pieza)
         if self.validar_posicion(pieza.x, pieza.y,not es_ficha,horizontal_player ):
+
             fila_idx = self.filas.index(pieza.x)
             col_idx = self.columnas.index(pieza.y)
             self.matriz[fila_idx][col_idx] = pieza.simbolo

@@ -13,11 +13,15 @@ class Ficha:
         - parametro y: Número de la columna.
         - parametro tablero: Objeto Tablero donde se colocará la ficha.
         """
+        # print(tablero.columnas, tablero.filas)
         self.x = x
+        self.idx_x =  tablero.columnas.index(y)
+        self.idx_y =  tablero.filas.index(x)
         self.horizontal_player = horizontal_player
         self.simbolo = f"{simbolo_jugador} "
         self.y = y
         self.tablero = tablero
+        # return self.anadir_ficha()
         
 
     def anadir_ficha(self) -> object:
