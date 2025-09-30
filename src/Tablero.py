@@ -33,7 +33,7 @@ class Tablero:
             # row = f"{fila:2} " + " ".join([cell for cell in self.matriz[i]])
             print(row)
 
-    def validar_posicion(self, x: str, y: int) -> bool:
+    def validar_posicion(self, x: str, y: int, es_muralla= False, horizontal_player = True) -> bool:
         """
         Valida si la posición (x, y) es válida para colocar ficha o muralla.
         """
@@ -51,19 +51,47 @@ class Tablero:
         fila_idx = self.filas.index(x)
         col_idx = self.columnas.index(y)
 
-        casilla_ocupada = self.matriz[fila_idx][col_idx] not in [".", "|", "-"]
+        casilla_ocupada = self.matriz[fila_idx][col_idx].strip() not in (None, ".", "|", "-")
         
+        mensaje_muralla = ""
+        mensaje_player = ""
+        if(es_muralla):
+            mensaje_muralla = " No se puede añadir una muralla:"
+
+        mensaje_player = "jugador horizontal" if horizontal_player else "jugador vertical"
+
         if casilla_ocupada:
+            print(f"{x}{y}:{mensaje_muralla} La casilla ya esta ocupada")
+            return False
+        
+        limite_correcto = self.validar_si_limite_correcto(col_idx, fila_idx, horizontal_player)
+        if not limite_correcto:
+            print(f"{x}{y}:{mensaje_muralla} Usted es {mensaje_player}, no puede añadir una ficha en ese limite a menos de que este proximo a ganar")
             return False
         
         # return self.matriz[fila_idx][col_idx] is None
         return True
+    
 
-    def recibir_pieza(self, pieza, es_ficha) -> None:
+    """ Validacion de que no puede poner una ficha
+      en los limites de otro jugador a menos de que 
+      hayan fichas en la fila o columna N-1, """
+    def validar_si_limite_correcto(self, idx_x, idx_y, horizontal_player:bool) -> bool:
+        if horizontal_player: 
+            if idx_y > 0 and idx_x == 0:
+                return False
+        else:
+            if idx_x > 0 and idx_y == 0:
+                return False
+        return True
+
+        
+
+    def recibir_pieza(self, pieza, es_ficha, horizontal_player:bool) -> None:
         """
         Recibe una pieza (ficha o muralla) para añadirla al tablero.
         """
-        if self.validar_posicion(pieza.x, pieza.y):
+        if self.validar_posicion(pieza.x, pieza.y,not es_ficha,horizontal_player ):
             fila_idx = self.filas.index(pieza.x)
             col_idx = self.columnas.index(pieza.y)
             self.matriz[fila_idx][col_idx] = pieza.simbolo

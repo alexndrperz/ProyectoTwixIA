@@ -6,7 +6,7 @@ class Ficha:
     Representa una ficha en el tablero.
     """
 
-    def __init__(self, x: str, y: int, tablero: Tablero, simbolo_jugador: str):
+    def __init__(self, x: str, y: int, tablero: Tablero, simbolo_jugador: str, horizontal_player = True):
         """
         Inicializa una ficha con sus coordenadas y tablero.
         - parametro x: Letra de la fila.
@@ -14,6 +14,7 @@ class Ficha:
         - parametro tablero: Objeto Tablero donde se colocará la ficha.
         """
         self.x = x
+        self.horizontal_player = horizontal_player
         self.simbolo = f"{simbolo_jugador} "
         self.y = y
         self.tablero = tablero
@@ -26,9 +27,8 @@ class Ficha:
         - devuelve: El objeto retornado por el tablero si es válida, None si no se añade.
         """
         
-        # if not self.tablero.validar_posicion(self.x, self.y):
-        #     return None
-        resultado = self.tablero.recibir_pieza(self, True)
+
+        resultado = self.tablero.recibir_pieza(self, True, self.horizontal_player)
         if resultado:
             return resultado
         return None

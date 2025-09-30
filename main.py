@@ -30,9 +30,43 @@ muralla.anadir_muralla()
 muralla2.anadir_muralla()
 
 
-tablero.mostrar_tablero()
-
+print()
 ###  4 Validar malos movimientos
 
-#
+# Ficha o muralla donde ya gat uno
+ficha4 = Ficha("A", 3, tablero, "B")
+muralla4 = Muralla(tablero, "D",4, False)
+muralla4.anadir_muralla()
+
+ficha4.anadir_ficha()
+
+# Validacion de que no puede poner una ficha en los limites de otro jugador a menos de que hayan fichas en
+#la fila o columna N-1: el resultado de esta prueba debe ser "no valido", ya que por defecto
+# el programa asume que es un player horizontal
+
+#Deberia no añadirse y dar mensaje de error
+ficha5 = Ficha("G", 1, tablero, "B")
+
+muralla5 = Muralla(tablero, "F",2, False)
+
+if ficha5.anadir_ficha() != None:
+    muralla5.anadir_muralla()
+
+#Deberia  añadirse y dar mensaje de error
+ficha6 = Ficha("G", 1, tablero, "B", False)
+
+muralla6 = Muralla(tablero, "H",2, True, False)
+
+if ficha6.anadir_ficha() != None:
+    muralla6.anadir_muralla()
+
+
+
+
+
+# Validacion de que no se pueda poner una muralla debajo de otra muralla.
+
+
+print()
+tablero.mostrar_tablero()
 
