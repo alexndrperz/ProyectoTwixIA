@@ -66,7 +66,7 @@ class Tablero:
         
         limite_correcto = self.validar_si_limite_correcto(col_idx, fila_idx, horizontal_player)
         if not limite_correcto:
-            print(f"{x}{y}:{mensaje_muralla} Usted es {mensaje_player}, no puede añadir una ficha en ese limite a menos de que este proximo a ganar")
+            print(f"{x}{y}:{mensaje_muralla} Usted no es un {mensaje_player}, no puede añadir una ficha en ese limite a menos de que este proximo a ganar")
             return False
         
         # return self.matriz[fila_idx][col_idx] is None
@@ -78,10 +78,11 @@ class Tablero:
       hayan fichas en la fila o columna N-1, """
     def validar_si_limite_correcto(self, idx_x, idx_y, horizontal_player:bool) -> bool:
         if horizontal_player: 
-            if idx_y > 0 and idx_x == 0:
+            if idx_y > 0 and (idx_x == 0 or idx_x == len(self.columnas) - 1):
                 return False
         else:
-            if idx_x > 0 and idx_y == 0:
+            # print(idx_y, idxz_x)
+            if idx_x > 0 and (idx_y == 0 or idx_y == len(self.filas) - 1):
                 return False
         return True
 

@@ -52,7 +52,7 @@ muralla5 = Muralla(tablero, "F",2, False)
 if ficha5.anadir_ficha() != None:
     muralla5.anadir_muralla()
 
-#Deberia  añadirse y dar mensaje de error
+#Deberia  añadirse 
 ficha6 = Ficha("G", 1, tablero, "B", False)
 
 muralla6 = Muralla(tablero, "H",2, True, False)
@@ -61,7 +61,16 @@ if ficha6.anadir_ficha() != None:
     muralla6.anadir_muralla()
 
 
+#Deberia  no añadirse 
+ficha6 = Ficha("L", 5, tablero, "B", False)
 
+muralla6 = Muralla(tablero, "K",6, False, False)
+
+if ficha6.anadir_ficha() != None:
+    muralla6.anadir_muralla()
+
+
+# 
 
 
 # Validacion de que no se pueda poner una muralla debajo de otra muralla.
