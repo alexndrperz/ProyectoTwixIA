@@ -56,6 +56,10 @@ class Muralla:
         # print(ficha2_abajo_derecha, ficha2_abajo_izquierda, ficha2_arriba_derecha, ficha2_arriba_izquierda)
         return (None, None,None)
 
+
+        
+
+
     def anadir_muralla(self) -> bool:
         """
         Añade la muralla al tablero validando la posición con el tablero.

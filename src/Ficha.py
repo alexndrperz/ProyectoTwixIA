@@ -6,7 +6,7 @@ class Ficha:
     Representa una ficha en el tablero.
     """
 
-    def __init__(self, x: str, y: int, tablero: Tablero, simbolo_jugador: str, horizontal_player = True):
+    def __init__(self, x: str, y: int, tablero: Tablero, simbolo_jugador: str,vertical_player = True):
         """
         Inicializa una ficha con sus coordenadas y tablero.
         - parametro x: Letra de la fila.
@@ -17,7 +17,7 @@ class Ficha:
         self.x = x
         self.idx_x =  tablero.columnas.index(y)
         self.idx_y =  tablero.filas.index(x)
-        self.horizontal_player = horizontal_player
+        self.vertical_player =  vertical_player
         self.simbolo = f"{simbolo_jugador} "
         self.y = y
         self.tablero = tablero
@@ -32,7 +32,7 @@ class Ficha:
         """
         
 
-        resultado = self.tablero.recibir_pieza(self, True, self.horizontal_player)
+        resultado = self.tablero.recibir_pieza(self, True, self.vertical_player, self.simbolo)
         if resultado:
             return resultado
         return None
