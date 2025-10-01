@@ -36,22 +36,24 @@ class Muralla:
         ficha2_arriba_derecha = (ficha2.idx_x == ficha1.idx_x +2) and (ficha2.idx_y == ficha1.idx_y -2)
         ficha2_arriba_izquierda = (ficha2.idx_x == ficha1.idx_x - 2) and (ficha2.idx_y == ficha1.idx_y -2)
         
-        if(ficha2_arriba_izquierda or ficha2_abajo_izquierda):
-            apuntando_derecha = False
+        if(ficha2_arriba_izquierda or ficha2_abajo_derecha):
+            apuntando_derecha = True
 
             if(ficha2_arriba_izquierda):
                 return (ficha1.idx_x -1,ficha1.idx_y -1 , apuntando_derecha)
-            if(ficha2_abajo_izquierda):
-                return (ficha1.idx_x -1,ficha1.idx_y +1 , apuntando_derecha)
-        
-        if(ficha2_arriba_derecha or ficha2_abajo_derecha):
-            apuntando_derecha = True
-
-            if(ficha2_arriba_derecha):
-                return (ficha1.idx_x +1,ficha1.idx_y -1 , apuntando_derecha)
             if(ficha2_abajo_derecha):
                 # print("2222")
                 return (ficha1.idx_x +1,ficha1.idx_y +1 , apuntando_derecha)
+      
+        
+        if(ficha2_arriba_derecha or ficha2_abajo_izquierda):
+            apuntando_derecha = False
+
+            if(ficha2_arriba_derecha):
+                return (ficha1.idx_x +1,ficha1.idx_y -1 , apuntando_derecha)
+            if(ficha2_abajo_izquierda):
+                return (ficha1.idx_x -1,ficha1.idx_y +1 , apuntando_derecha)
+
         
         # print(ficha2_abajo_derecha, ficha2_abajo_izquierda, ficha2_arriba_derecha, ficha2_arriba_izquierda)
         return (None, None,None)

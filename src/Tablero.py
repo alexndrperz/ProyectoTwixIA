@@ -19,7 +19,7 @@ class Tablero:
         self.filas = filas
         self.columnas = columnas 
         self.matriz = self._get_rows_columns_table(columnas, filas)
-        self.is_winner = False
+        self.winner = {"is_winner":False, "player": ""}
 
     def mostrar_tablero(self) -> None:
         """
@@ -125,6 +125,13 @@ class Tablero:
             fila_idx = self.filas.index(pieza.x)
             col_idx = self.columnas.index(pieza.y)
             self.matriz[fila_idx][col_idx] = pieza.simbolo
+            if col_idx == len(self.columnas)-1: 
+                self.winner["is_winner"] = True
+                self.winner["player"] = "B"
+
+            if fila_idx == len(self.filas)-1: 
+                self.winner["is_winner"] = True
+                self.winner["player"] = "A"
             return {"x_index":col_idx, "y_index":fila_idx}
     
     
