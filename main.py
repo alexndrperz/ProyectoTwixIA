@@ -86,14 +86,23 @@ tablero = Tablero()
 ## 7 Añadir fichas 
 print("prueba 7")
 ficha8 = Ficha("J", 5, tablero, "A")
-ficha7 = Ficha("L", 7, tablero, "A")
+ficha7 = Ficha("A", 7, tablero, "A")
 # ficha3 = Ficha("E", 3, tablero, "A")
 
-muralla8 = Muralla(tablero, ficha8,ficha7, True)
+# for
+
+# resultFicha8 = ficha8.anadir_ficha()
+# muralla8 = Muralla(tablero, ficha8,ficha7, True)
+
+resultFicha7 = ficha7.anadir_ficha()
+
+
 # muralla2 = Muralla(tablero, ficha2,ficha3, False)
 
-# ficha8.anadir_ficha()
-ficha7.anadir_ficha()
-muralla8.anadir_muralla()
+# muralla8.anadir_muralla()
 
 tablero.mostrar_tablero()
+
+
+
+# validar si es primer moviemiento de jugador para saber si puede poner la ficha en otro sitio que no sea fila o columna A
