@@ -38,13 +38,13 @@ class Tablero:
         Valida si la posición (x, y) es válida para colocar ficha o muralla.
         """
 
-        print(x, y, es_muralla)
+        # print(x, y, es_muralla)
         if x not in self.filas:
-            print(x, "no")
+            # print(x, "no")
             return False
         
         if y not in self.columnas:
-            print("noy")
+            # print("noy")
             return False
 
         
