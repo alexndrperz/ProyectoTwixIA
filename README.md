@@ -17,7 +17,7 @@ Es el primer examen parcial de la materia de Inteligencia Artificial impartida p
 ## 👤 Autores
 - Equipo (5 participantes):
 - **Christian Gil** – **2012-1036**
-- Integrante 2 – Matrícula
+- **Omar Martinez** – **2021-0806**
 - Integrante 3 – Matrícula
 - **Lesley Peguero** – **2023-1591**
 - Integrante 5 – Matrícula
