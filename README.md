@@ -19,7 +19,7 @@ Es el primer examen parcial de la materia de Inteligencia Artificial impartida p
 - **Christian Gil** – **2012-1036**
 - Integrante 2 – Matrícula
 - Integrante 3 – Matrícula
-- Integrante 4 – Matrícula
+- **Lesley Peguero** – **2023-1591**
 - Integrante 5 – Matrícula
 
 ## 📸 Capturas de Pantalla
