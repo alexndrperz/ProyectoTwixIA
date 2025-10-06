@@ -25,7 +25,8 @@ Es el primer examen parcial de la materia de Inteligencia Artificial impartida p
 ## 📸 Capturas de Pantalla
 A continuación, se muestran capturas del juego ejecutándose en consola:
 
-1. ![Captura 1](/imgs/twixt1.png)
+1. ![Captura 1](/imgs/img1.png)
+2. ![Captura 2](/imgs/img2.png)
 
 ## 🚀 Instrucciones de Uso
 1. 🛠️ Clona este repositorio.
