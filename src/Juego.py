@@ -144,10 +144,10 @@ class Juego:
         Efectos:
             Interactúa con la consola.
         """
-        if not jugador.fichas:
+        if not jugador.pieces:
             print("(Sin fichas aún)")
             return
-        for idx, piece in enumerate(jugador.fichas, start=1):
+        for idx, piece in enumerate(jugador.pieces, start=1):
             print(f"  {idx}) ({piece.x}, {piece.y})")
 
     def _choose_two_fichas_for_wall(
@@ -168,8 +168,8 @@ class Juego:
         Efectos:
             Interactúa con la consola.
         """
-        assert len(jugador.fichas) >= 2, "Se requieren al menos dos fichas"
-        pieces = list(jugador.fichas)
+        assert len(jugador.pieces) >= 2, "Se requieren al menos dos fichas"
+        pieces = list(jugador.pieces)
 
         def ask_index(prompt: str) -> int:
             while True:
@@ -199,14 +199,14 @@ class Juego:
         """Inicializa tablero y jugadores y ejecuta el bucle de turnos.
 
         Flujo general:
-        - Construye un tablero 20x20 (filas A..T, columnas 1..20).
+        - Construye el tablero.
         - Solicita nombres para Jugador A y B.
-        - Alterna turnos hasta que `tablero.is_winner` sea verdadero.
+        - Alterna turnos hasta que `tablero.winner["is_winner"]` sea verdadero.
 
         Efectos:
             Interactúa con la consola, crea estado de juego en memoria.
         """
-        print("\nBienvenido a TWIXT (Consola)\n")
+        print("\nBienvenido a TWIXT\n")
 
         filas = list(string.ascii_uppercase[:20])
         columnas = list(range(1, 21))
@@ -219,12 +219,15 @@ class Juego:
         self.jugadores = [jugador_a, jugador_b]
         self.turn_index = 0
 
-        while not self.tablero.is_winner:  # type: ignore[union-attr]
+        assert self.tablero is not None
+        while not self.tablero.winner["is_winner"]:
             jugador_actual = self.jugadores[self.turn_index]
-            print(f"\nTurno de {jugador_actual.nombre} (Jugador {jugador_actual.jugador_id})")
+            print(
+                f"\nTurno de {jugador_actual.nombre} (Jugador {jugador_actual.player_id.value})"
+            )
             self.turno_jugador(jugador_actual)
             self.verificar_ganador()
-            if self.tablero.is_winner:  # type: ignore[union-attr]
+            if self.tablero.winner["is_winner"]:
                 break
             self.turn_index = 1 - self.turn_index
 
@@ -256,52 +259,59 @@ class Juego:
             if action == "ficha":
                 x = self._ask_letter("Fila (letra): ")
                 y = self._ask_int("Columna (número): ")
-                ficha = Ficha(x, y, self.tablero)
+                ficha = Ficha(
+                    x,
+                    y,
+                    self.tablero,
+                    jugador.symbol,
+                    jugador.is_vertical_player,
+                )
 
                 result = ficha.anadir_ficha()
-
-                # Interpretación flexible del retorno: (ok, can_add_wall) | ok
-                ok: bool
-                can_add_wall: bool
-                if isinstance(result, tuple) and len(result) >= 2:
-                    ok = bool(result[0])
-                    can_add_wall = bool(result[1])
-                elif isinstance(result, bool):
-                    ok = result
-                    can_add_wall = False
-                else:
-                    ok = bool(result)
-                    can_add_wall = False
+                ok = bool(result)
 
                 if not ok:
                     print("No se pudo colocar la ficha. Intenta nuevamente.")
                     continue
 
-                jugador.fichas.append(ficha)
+                jugador.add_piece(ficha)
                 self.tablero.mostrar_tablero()
 
-                if can_add_wall and len(jugador.fichas) >= 2:
+                if len(jugador.pieces) >= 2:
                     if self._ask_yes_no("¿Deseas añadir una muralla ahora?"):
-                        f1, f2 = self._choose_two_fichas_for_wall(jugador, prefer_include=ficha)
-                        muralla = Muralla(self.tablero, f1, f2)
-                        if muralla.anadir_muralla():
-                            jugador.murallas.append(muralla)
-                            self.tablero.mostrar_tablero()
-                        else:
+                        f1, f2 = self._choose_two_fichas_for_wall(
+                            jugador, prefer_include=ficha
+                        )
+                        muralla = Muralla(
+                            self.tablero, f1, f2, horizontal_player=jugador.is_vertical_player
+                        )
+                        try:
+                            if muralla.anadir_muralla():
+                                jugador.add_wall(muralla)
+                                self.tablero.mostrar_tablero()
+                            else:
+                                print("Muralla inválida. No se añadió.")
+                        except AttributeError:
                             print("Muralla inválida. No se añadió.")
                 return
 
             if action == "muralla":
-                if len(jugador.fichas) < 2:
+                if len(jugador.pieces) < 2:
                     print("Necesitas al menos dos fichas para construir una muralla.")
                     continue
                 f1, f2 = self._choose_two_fichas_for_wall(jugador)
-                muralla = Muralla(self.tablero, f1, f2)
-                if muralla.anadir_muralla():
-                    jugador.murallas.append(muralla)
-                    self.tablero.mostrar_tablero()
-                    return
-                else:
+                muralla = Muralla(
+                    self.tablero, f1, f2, horizontal_player=jugador.is_vertical_player
+                )
+                try:
+                    if muralla.anadir_muralla():
+                        jugador.add_wall(muralla)
+                        self.tablero.mostrar_tablero()
+                        return
+                    else:
+                        print("Muralla inválida. Intenta nuevamente.")
+                        continue
+                except AttributeError:
                     print("Muralla inválida. Intenta nuevamente.")
                     continue
 
@@ -316,7 +326,13 @@ class Juego:
         """
         if self.tablero is None:
             return
-        if self.tablero.is_winner:
-            ganador = self.jugadores[self.turn_index]
-            ganador.is_winner = True
-            print(f"\n¡{ganador.nombre} (Jugador {ganador.jugador_id}) ha ganado!")
+        if self.tablero.winner["is_winner"]:
+            winner_id = str(self.tablero.winner.get("player", "")).upper()
+            ganador = next(
+                (j for j in self.jugadores if j.player_id.value == winner_id),
+                self.jugadores[self.turn_index],
+            )
+            ganador.mark_as_winner()
+            print(
+                f"\n¡{ganador.nombre} (Jugador {ganador.player_id.value}) ha ganado!"
+            )
