@@ -25,7 +25,8 @@ class Tablero:
         """
         Muestra el estado actual del tablero con filas y columnas.
         """
-        header = "   " + "".join([f"{c}  " for c in self.columnas])
+        # Encabezado: cada número ocupa 2 caracteres y se separa con 1 espacio
+        header = "   " + " ".join(f"{c:>2}" for c in self.columnas)
         print(header)
         for i, fila in enumerate(self.filas):
             row = self._mostrar_fila(fila, i)
@@ -136,7 +137,8 @@ class Tablero:
     
     
     def _mostrar_fila(self, fila, index):
-        filaStr = f"{fila:2} " + " ".join([cell for cell in self.matriz[index]])
+        # Etiqueta de fila (2 chars) + espacio; celdas (2 chars) separadas por 1 espacio
+        filaStr = f"{fila:>2} " + " ".join(self.matriz[index])
         return filaStr
     
 
