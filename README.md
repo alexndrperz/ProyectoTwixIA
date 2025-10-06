@@ -18,7 +18,7 @@ Es el primer examen parcial de la materia de Inteligencia Artificial impartida p
 - Equipo (5 participantes):
 - **Christian Gil** – **2012-1036**
 - **Omar Martinez** – **2021-0806**
-- Integrante 3 – Matrícula
+- **Jeison Rosario** – **2023-1046**
 - **Lesley Peguero** – **2023-1591**
 - Integrante 5 – Matrícula
 
