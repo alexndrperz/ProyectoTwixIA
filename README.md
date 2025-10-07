@@ -20,8 +20,7 @@ Es el primer examen parcial de la materia de Inteligencia Artificial impartida p
 - **Omar Martinez** – **2021-0806**
 - **Jeison Rosario** – **2023-1046**
 - **Lesley Peguero** – **2023-1591**
-- Integrante 5 – Matrícula
-
+- **Alan Perez** - **2023-1069**
 ## 📸 Capturas de Pantalla
 A continuación, se muestran capturas del juego ejecutándose en consola:
 
