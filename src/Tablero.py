@@ -1,4 +1,6 @@
 import string
+from Jugador import Jugador
+from Ficha import Ficha
 
 class Tablero:
     """
@@ -33,6 +35,25 @@ class Tablero:
 
             # row = f"{fila:2} " + " ".join([cell for cell in self.matriz[i]])
             print(row)
+
+    def conocer_movimientos_posibles(self, jugador:Jugador):
+        if(jugador.is_first_play):
+            if(jugador.is_vertical_player):
+                pass
+            else:
+                pass
+        
+        
+        for ficha  in jugador.pieces:
+            result = self._construir_tupla_jugadas_posibles(ficha)
+            
+    def _construir_tupla_jugadas_posibles(self, ficha:Ficha):
+        pos_arriba_izquierda = self.validar_posicion(ficha.idx_x - 2,)
+        pos_arriba_izquierda = self.validar_posicion(ficha.idx_x - 2)
+        pos_arriba_izquierda = self.validar_posicion(ficha.idx_x - 2)
+        pos_arriba_izquierda = self.validar_posicion(ficha.idx_x - 2)
+            
+        
 
     def validar_posicion(self, x: str, y: int, es_muralla= False, vertical_player = True, simbolo_jugador = "") -> bool:
         """

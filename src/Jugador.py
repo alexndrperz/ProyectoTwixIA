@@ -53,6 +53,7 @@ class Jugador:
         self.pieces: list[Ficha] = []
         self.walls: list[Muralla] = []
         self.is_winner: bool = False
+        self.is_first_play:bool = len(self.pieces) == 0 
         self.is_vertical_player: bool = self.player_id == PlayerID.A
         self.symbol: str = f"{self.player_id.value} "
 
