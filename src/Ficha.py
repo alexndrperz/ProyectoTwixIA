@@ -18,7 +18,7 @@ class Ficha:
         self.idx_x =  tablero.columnas.index(y)
         self.idx_y =  tablero.filas.index(x)
         self.vertical_player =  vertical_player
-        self.simbolo = f"{simbolo_jugador} "
+        self.simbolo = f"{simbolo_jugador}"
         self.y = y
         self.tablero = tablero
         # return self.anadir_ficha()
