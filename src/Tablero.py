@@ -32,7 +32,7 @@ class Tablero:
             row = self._mostrar_fila(fila, i)
 
             # row = f"{fila:2} " + " ".join([cell for cell in self.matriz[i]])
-            # print(row)
+            print(row)
 
     def validar_posicion(self, x: str, y: int, es_muralla= False, vertical_player = True, simbolo_jugador = "") -> bool:
         """
