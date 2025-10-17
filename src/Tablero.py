@@ -32,7 +32,7 @@ class Tablero:
             row = self._mostrar_fila(fila, i)
 
             # row = f"{fila:2} " + " ".join([cell for cell in self.matriz[i]])
-            print(row)
+            # print(row)
 
     def validar_posicion(self, x: str, y: int, es_muralla= False, vertical_player = True, simbolo_jugador = "") -> bool:
         """
@@ -92,13 +92,32 @@ class Tablero:
                 result_izquierda=  coleccion_a_evaluar[idx_ficha_a_izquierda] == simbolo_jugador
 
             if not result_derecha and not result_izquierda:
-                print(f"{x}{y}: La ficha que intento poner en la fila L no se puede añadir ya que no hay ninguna ficha ni a derecha ni a izquierda en la fila J")
+                print(f"{x}{y}: La ficha que intento poner en la fila ante penultima no se puede añadir ya que no hay ninguna ficha ni a derecha ni a izquierda en la fila J")
                 return False 
             else:
                 return True
         
         else:
-            print(self.columnas)
+            idx_ficha_arriba  =idx_y - 2 
+            idx_ficha_a_abajo =idx_y + 2 
+            coleccion_a_evaluar = []
+            
+            for fila in  self.matriz:
+                coleccion_a_evaluar.append(fila[len(fila)-3])
+            result_arriba = False
+            result_abajo = False
+            if idx_ficha_arriba > 0:
+                result_arriba =  coleccion_a_evaluar[idx_ficha_arriba] == simbolo_jugador
+            
+            if idx_ficha_a_izquierda >= 0:
+                # print(coleccion_a_evaluar[idx_ficha_a_izquierda], idx_x)
+                result_abajo=  coleccion_a_evaluar[idx_ficha_a_abajo] == simbolo_jugador
+
+            if not result_arriba and not result_abajo:
+                print(f"{x}{y}: La ficha que intento poner en la fila L no se puede añadir ya que no hay ninguna ficha ni a derecha ni a izquierda en la fila J")
+                return False 
+            else:
+                return True
 
      
     """ Validacion de que no puede poner una ficha
