@@ -358,7 +358,7 @@ class Juego:
         turn_is_vertical = jugador.is_vertical_player
         state = TwixtState.from_tablero(self.tablero, turn_is_vertical)
         solver = MinimaxSolver(me_is_vertical=turn_is_vertical)
-        move = solver.solve(state, max_time_s=3.0, max_depth=4)
+        move = solver.solve(state, max_time_s=1.0, max_depth=4)
 
         if move is None:
             print("IA pasa (sin jugadas).")
