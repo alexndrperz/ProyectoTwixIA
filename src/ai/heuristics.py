@@ -10,6 +10,8 @@ def evaluate(state: TwixtState, me_is_vertical: bool) -> float:
     - Progreso propio menos del rival hacia su objetivo.
     - Diferencia de número de piezas colocadas.
     - Ligero control del centro.
+    - Conectividad por saltos (puentes potenciales).
+    - Movilidad (cantidad de jugadas legales propias vs rival).
     """
     if state.is_terminal():
         if state.winner_vertical is True:
@@ -25,12 +27,16 @@ def evaluate(state: TwixtState, me_is_vertical: bool) -> float:
     conn_a = _connectivity_score(state, True)
     conn_b = _connectivity_score(state, False)
 
+    # Movilidad (conteo de jugadas legales disponibles)
+    mob_a, mob_b = _mobility(state)
+
     if me_is_vertical:
         score = (
             2.0 * (prog_a - prog_b)
             + 0.5 * (a_count - b_count)
             + 0.3 * (conn_a - conn_b)
             + 0.2 * (center_a - center_b)
+            + 0.15 * (_normalize_mobility(mob_a) - _normalize_mobility(mob_b))
         )
     else:
         score = (
@@ -38,6 +44,7 @@ def evaluate(state: TwixtState, me_is_vertical: bool) -> float:
             + 0.5 * (b_count - a_count)
             + 0.3 * (conn_b - conn_a)
             + 0.2 * (center_b - center_a)
+            + 0.15 * (_normalize_mobility(mob_b) - _normalize_mobility(mob_a))
         )
     return float(score)
 
@@ -111,3 +118,30 @@ def _connectivity_score(state: TwixtState, vertical: bool) -> float:
                 links += 1
     # Cada enlace contado dos veces (desde ambos extremos)
     return links / 2.0
+
+
+def _mobility(state: TwixtState) -> tuple[int, int]:
+    """Devuelve (movilidades de A, B): número de jugadas legales para cada bando."""
+    # Estado para A moviendo
+    as_state = TwixtState(
+        filas=state.filas,
+        columnas=state.columnas,
+        matrix=state.matrix,
+        turn_is_vertical=True,
+        winner_vertical=state.winner_vertical,
+    )
+    # Estado para B moviendo
+    bs_state = TwixtState(
+        filas=state.filas,
+        columnas=state.columnas,
+        matrix=state.matrix,
+        turn_is_vertical=False,
+        winner_vertical=state.winner_vertical,
+    )
+    return len(as_state.legal_moves()), len(bs_state.legal_moves())
+
+
+def _normalize_mobility(m: int) -> float:
+    """Normaliza movilidad a ~[0,1] para pesos estables (div. por tamaño típico)."""
+    # Para tableros 20x20, movilidad típica útil está por debajo de ~100
+    return min(1.0, m / 100.0)
