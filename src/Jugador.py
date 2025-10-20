@@ -33,7 +33,7 @@ class Jugador:
 
     MIN_PIECES_FOR_WALL = 2  # Mínimo de fichas necesarias para construir muralla
 
-    def __init__(self, nombre: str, jugador_id: str):
+    def __init__(self, nombre: str, jugador_id: str, is_ai: bool = False):
         """
         Inicializa un jugador del juego TWIXT.
 
@@ -57,6 +57,7 @@ class Jugador:
         # print(self.pieces)
         self.is_vertical_player: bool = self.player_id == PlayerID.A
         self.symbol: str = f"{self.player_id.value} "
+        self.is_ai: bool = is_ai
 
     def add_piece(self, ficha: Ficha) -> bool:
         """

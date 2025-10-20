@@ -208,6 +208,32 @@ class Tablero:
                 return False
         return True
 
+    def es_casilla_vacia(self, x: str, y: int) -> bool:
+        """
+        Indica si la casilla (x, y) está libre para colocar una ficha.
+
+        Nota: No imprime mensajes ni valida reglas de límites; sólo verifica ocupación.
+        """
+        if x not in self.filas or y not in self.columnas:
+            return False
+        fila_idx = self.filas.index(x)
+        col_idx = self.columnas.index(y)
+        return self.matriz[fila_idx][col_idx].strip() in (None, ".", "|", "-")
+
+    def generar_movimientos_legales(self, vertical_player: bool) -> list[tuple[str, int]]:
+        """
+        Genera todas las jugadas legales (colocar ficha) para el jugador dado.
+
+        Esta versión consulta `validar_posicion` para asegurar reglas básicas del tablero.
+        No imprime nada; retorna lista de pares (fila, columna).
+        """
+        movimientos: list[tuple[str, int]] = []
+        for x in self.filas:
+            for y in self.columnas:
+                if self.validar_posicion(x, y, False, vertical_player):
+                    movimientos.append((x, y))
+        return movimientos
+
         
 
     def recibir_pieza(self, pieza, es_ficha, horizontal_player:bool, simbolo_jugador="") -> None:
