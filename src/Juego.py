@@ -257,6 +257,7 @@ class Juego:
             action = self._ask_action()
 
             if action == "ficha":
+                self.tablero.conocer_movimientos_posibles(jugador)
                 x = self._ask_letter("Fila (letra): ")
                 y = self._ask_int("Columna (número): ")
                 ficha = Ficha(
@@ -269,7 +270,6 @@ class Juego:
 
                 result = ficha.anadir_ficha()
                 ok = bool(result)
-
                 if not ok:
                     print("No se pudo colocar la ficha. Intenta nuevamente.")
                     continue

@@ -54,6 +54,7 @@ class Jugador:
         self.walls: list[Muralla] = []
         self.is_winner: bool = False
         self.is_first_play:bool = len(self.pieces) == 0 
+        # print(self.pieces)
         self.is_vertical_player: bool = self.player_id == PlayerID.A
         self.symbol: str = f"{self.player_id.value} "
 
@@ -67,6 +68,7 @@ class Jugador:
         Returns:
             True si la ficha se añadió correctamente, False si ya existe.
         """
+
         if ficha not in self.pieces:
             self.pieces.append(ficha)
             return True

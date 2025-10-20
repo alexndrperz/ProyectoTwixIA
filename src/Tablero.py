@@ -1,6 +1,6 @@
 import string
-from Jugador import Jugador
-from Ficha import Ficha
+# from src.Jugador import Jugador
+# from Ficha import Ficha
 
 class Tablero:
     """
@@ -36,24 +36,78 @@ class Tablero:
             # row = f"{fila:2} " + " ".join([cell for cell in self.matriz[i]])
             print(row)
 
-    def conocer_movimientos_posibles(self, jugador:Jugador):
-        if(jugador.is_first_play):
+    def conocer_movimientos_posibles(self, jugador):
+        final_result = []
+        is_first_play = len(jugador.pieces) == 0
+        # print(is_first_play)
+        if(is_first_play):
             if(jugador.is_vertical_player):
-                pass
+                y = self.filas[0]
+                columns = self.columnas
+                for col in columns:
+                    final_result.append(f"{y}{col}")   
             else:
-                pass
-        
-        
-        for ficha  in jugador.pieces:
-            result = self._construir_tupla_jugadas_posibles(ficha)
+                x = self.columnas[0]
+                filas = self.filas
+                for fil in filas:
+                    final_result.append(f"{fil}{x}")
+        else: 
+            for ficha  in jugador.pieces:
+                result = self._construir_tupla_jugadas_posibles(ficha)
+                for res in result:
+                    print(res,123)
+                    final_result.append(res)
+        print(final_result) 
             
-    def _construir_tupla_jugadas_posibles(self, ficha:Ficha):
-        pos_arriba_izquierda = self.validar_posicion(ficha.idx_x - 2,)
-        pos_arriba_izquierda = self.validar_posicion(ficha.idx_x - 2)
-        pos_arriba_izquierda = self.validar_posicion(ficha.idx_x - 2)
-        pos_arriba_izquierda = self.validar_posicion(ficha.idx_x - 2)
             
+
+    def _construir_tupla_jugadas_posibles(self, ficha):
+        cord_arriba_izquierda = self._find_cord(ficha.idx_x - 2, ficha.idx_y - 2)
+        cord_arriba_derecha = self._find_cord(ficha.idx_x + 2, ficha.idx_y - 2)
+        cord_abajo_izquierda = self._find_cord(ficha.idx_x - 2, ficha.idx_y + 2)
+        cord_abajo_derecha = self._find_cord(ficha.idx_x + 2, ficha.idx_y + 2)
+
+        list_result_cords = [cord_arriba_izquierda, cord_arriba_derecha, cord_abajo_izquierda, cord_abajo_derecha]
+
+        list_valid_result = []
+                
+        for result in list_result_cords:
+            if result: 
+                x, y = result
+                valid = self.validar_posicion(x, y, False, ficha.vertical_player, ficha.simbolo)
+                print(valid)
+                if valid:
+                    list_valid_result.append(f"{x}{y}")
+                
+       
+        # print(list_valid_result)
+        # print(list_result_cords)
+        print(list_valid_result)
+        return list_valid_result
+        # pos_arriba_izquierda = self.validar_posicion(,)
+        # pos_arriba_izquierda = self.validar_posicion(ficha.idx_x - 2)
+        # pos_arriba_izquierda = self.validar_posicion(ficha.idx_x - 2)
+        # pos_arriba_izquierda = self.validar_posicion(ficha.idx_x - 2)
+            
+            
+            
+    def _find_cord(self, idx_x, idx_y):
+        cord_x= None
+        cord_y= None
         
+        if idx_x < len(self.columnas) and idx_x > 0:
+            cord_x = self.columnas[idx_x]
+        
+        if idx_y < len(self.filas) and idx_y >0:
+            cord_y = self.filas[idx_y]
+        
+        
+        # print(idx_x, idx_y, cord_x, cord_y)
+        if cord_x == None or cord_y == None:
+            return None 
+        
+        print(cord_x, cord_y)
+        return (cord_x, cord_y)
 
     def validar_posicion(self, x: str, y: int, es_muralla= False, vertical_player = True, simbolo_jugador = "") -> bool:
         """
@@ -62,11 +116,11 @@ class Tablero:
 
         # print(x, y, es_muralla)
         if x not in self.filas:
-            # print(x, "no")
+            print(x, "no")
             return False
         
         if y not in self.columnas:
-            # print("noy")
+            print("no", y)
             return False
 
         
