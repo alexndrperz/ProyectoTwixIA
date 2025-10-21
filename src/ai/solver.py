@@ -12,8 +12,21 @@ class MinimaxSolver:
 
     def __init__(self, me_is_vertical: bool):
         self.me_is_vertical = me_is_vertical
+        # Métricas de búsqueda
+        self.nodes_visited = 0
+        self.nodes_expanded = 0
+        self.nodes_generated = 0
+        self.leaf_evaluations = 0
+        self.cutoffs = 0
 
     def solve(self, root_state: TwixtState, max_time_s: float = 1.0, max_depth: int = 4) -> Tuple[str, int] | None:
+        # Reiniciar métricas para este ciclo de pensamiento
+        self.nodes_visited = 0
+        self.nodes_expanded = 0
+        self.nodes_generated = 0
+        self.leaf_evaluations = 0
+        self.cutoffs = 0
+
         deadline = time.time() + max_time_s
         best_move: Tuple[str, int] | None = None
         for depth in range(1, max_depth + 1):
@@ -32,14 +45,19 @@ class MinimaxSolver:
         beta: float,
         deadline: float,
     ) -> tuple[Tuple[str, int] | None, float]:
+        self.nodes_visited += 1
         if time.time() >= deadline or depth == 0 or state.is_terminal():
+            self.leaf_evaluations += 1
             return None, evaluate(state, self.me_is_vertical)
 
         is_max = (state.turn_is_vertical == self.me_is_vertical)
         best_move: Tuple[str, int] | None = None
         best_val = float("-inf") if is_max else float("inf")
 
+        # Nodo no hoja: se expande
+        self.nodes_expanded += 1
         for move in self._ordered_moves(state):
+            self.nodes_generated += 1
             child = state.apply(move)
             _, val = self._search_depth(child, depth - 1, alpha, beta, deadline)
             if is_max:
@@ -55,6 +73,7 @@ class MinimaxSolver:
                 if best_val < beta:
                     beta = best_val
             if beta <= alpha:
+                self.cutoffs += 1
                 break
         return best_move, best_val
 
