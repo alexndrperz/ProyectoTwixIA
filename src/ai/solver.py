@@ -60,7 +60,6 @@ class MinimaxSolver:
 
     def _ordered_moves(self, state: TwixtState) -> List[Tuple[str, int]]:
         moves = state.legal_moves()
-        # Ordenamiento mejorado: progreso + cercanía a compañeros
         if not moves:
             return moves
 
@@ -69,9 +68,7 @@ class MinimaxSolver:
             x, y = move
             i = state.filas.index(x)
             j = state.columnas.index(y)
-            # Progreso hacia objetivo
             prog = i if state.turn_is_vertical else j
-            # Cercanía a cualquier pieza propia (inverso de distancia Manhattan)
             near = 0.0
             for pi, pj in own:
                 d = abs(pi - i) + abs(pj - j)

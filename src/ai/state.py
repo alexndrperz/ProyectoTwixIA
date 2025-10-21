@@ -11,7 +11,6 @@ EMPTY_MARKS = {None, ".", "|", "-"}
 class TwixtState:
     """Estado inmutable para búsqueda Minimax en Twixt.
 
-    Atributos:
         filas: Etiquetas de filas (letras).
         columnas: Etiquetas de columnas (números).
         matrix: Matriz de strings (por ejemplo ". ", "A ", "B ", "| ", "- ").
@@ -48,7 +47,7 @@ class TwixtState:
         focused = self._focused_moves()
         if focused:
             return focused
-        # Fallback amplio si no hay candidatos
+
         moves: List[Tuple[str, int]] = []
         for x in self.filas:
             for y in self.columnas:
@@ -80,7 +79,7 @@ class TwixtState:
             winner_vertical=winner_vertical,
         )
 
-    # --- Utilidades internas ---
+
     def _is_inside(self, x: str, y: int) -> bool:
         return x in self.filas and y in self.columnas
 
@@ -94,14 +93,14 @@ class TwixtState:
         j = self.columnas.index(y)
         if not self._is_empty(i, j):
             return False
-        # Bordes según reglas actuales del Tablero
+
         if vertical_player:
             if i > 0 and (j == 0 or j == len(self.columnas) - 1):
                 return False
         else:
             if j > 0 and (i == 0 or i == len(self.filas) - 1):
                 return False
-        # Extremos ganadores: requiere “apoyo” a distancia 2
+
         if i == len(self.filas) - 1 and vertical_player:
             row_before = self.matrix[len(self.filas) - 3]
             left_idx = j - 2
@@ -134,7 +133,7 @@ class TwixtState:
         """Devuelve jugadas candidatas: aperturas o saltos de caballo desde piezas propias."""
         candidates: list[Tuple[str, int]] = []
         own_positions = self.get_piece_positions(self.turn_is_vertical)
-        # Aperturas: primera fila o primera columna según bando si aún no hay piezas
+
         if not own_positions:
             if self.turn_is_vertical:
                 x = self.filas[0]
@@ -148,7 +147,7 @@ class TwixtState:
                         candidates.append((x, y))
             return candidates
 
-        # Saltos tipo caballo (±2, ±2) que son los que permiten puentes legales
+
         offsets = [(-2, -2), (2, -2), (-2, 2), (2, 2)]
         for i, j in own_positions:
             for di, dj in offsets:
@@ -159,7 +158,6 @@ class TwixtState:
                     if self._is_legal_cell(x, y, self.turn_is_vertical):
                         candidates.append((x, y))
 
-        # Quitar duplicados preservando orden
         seen: set[Tuple[str, int]] = set()
         unique: list[Tuple[str, int]] = []
         for m in candidates:

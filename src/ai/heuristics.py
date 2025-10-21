@@ -4,14 +4,13 @@ from .state import TwixtState
 
 
 def evaluate(state: TwixtState, me_is_vertical: bool) -> float:
-    """Heurística simple y rápida para TWIXT.
+    """Evalua heuristicas del juego para el minimax solver
 
-    Componentes:
-    - Progreso propio menos del rival hacia su objetivo.
-    - Diferencia de número de piezas colocadas.
-    - Ligero control del centro.
-    - Conectividad por saltos (puentes potenciales).
-    - Movilidad (cantidad de jugadas legales propias vs rival).
+    _count_pieces: Cuenta el numero de piezas que hay en el tablero para cada jugada posible
+    _progress_vertical: Dice que tan cerca estas del limite ganador verticalmente(osea de poner una pieza donde tienes que ponerla para ganar)
+    _progress_horizontal: Dice que tan cerca del limite ganador estas horizontalmente
+    _center_control: Dice que tantas piezas tienes que controlan el centro
+    _connectivity_score: Dice que tantas murallas tienes en el tablero   
     """
     if state.is_terminal():
         if state.winner_vertical is True:
@@ -27,7 +26,6 @@ def evaluate(state: TwixtState, me_is_vertical: bool) -> float:
     conn_a = _connectivity_score(state, True)
     conn_b = _connectivity_score(state, False)
 
-    # Movilidad (conteo de jugadas legales disponibles)
     mob_a, mob_b = _mobility(state)
 
     if me_is_vertical:
@@ -62,7 +60,6 @@ def _count_pieces(state: TwixtState) -> tuple[int, int]:
 
 
 def _progress_vertical(state: TwixtState) -> float:
-    # Última fila alcanzada por A normalizada
     max_row = -1
     for i, row in enumerate(state.matrix):
         if any(cell == "A " for cell in row):
@@ -73,7 +70,6 @@ def _progress_vertical(state: TwixtState) -> float:
 
 
 def _progress_horizontal(state: TwixtState) -> float:
-    # Última columna alcanzada por B normalizada
     max_col = -1
     for row in state.matrix:
         for j, cell in enumerate(row):
@@ -86,7 +82,7 @@ def _progress_horizontal(state: TwixtState) -> float:
 
 
 def _center_control(state: TwixtState, vertical: bool) -> float:
-    # Promedio inverso de distancia al centro (más cerca = mejor)
+    """Control en el centro"""
     target = "A " if vertical else "B "
     h = len(state.filas)
     w = len(state.columnas)
@@ -106,7 +102,7 @@ def _center_control(state: TwixtState, vertical: bool) -> float:
 
 
 def _connectivity_score(state: TwixtState, vertical: bool) -> float:
-    # Cuenta adyacencias de salto de caballo entre piezas del mismo bando
+    """Que tantas murallas tiene el player"""
     positions = state.get_piece_positions(vertical)
     pos_set = set(positions)
     offsets = [(-2, -2), (2, -2), (-2, 2), (2, 2)]
@@ -116,13 +112,11 @@ def _connectivity_score(state: TwixtState, vertical: bool) -> float:
             ni, nj = i + di, j + dj
             if (ni, nj) in pos_set:
                 links += 1
-    # Cada enlace contado dos veces (desde ambos extremos)
     return links / 2.0
 
 
 def _mobility(state: TwixtState) -> tuple[int, int]:
-    """Devuelve (movilidades de A, B): número de jugadas legales para cada bando."""
-    # Estado para A moviendo
+    """Devuelve (movimientos posibles de A, B): número de jugadas legales para cada bando."""
     as_state = TwixtState(
         filas=state.filas,
         columnas=state.columnas,
@@ -130,7 +124,6 @@ def _mobility(state: TwixtState) -> tuple[int, int]:
         turn_is_vertical=True,
         winner_vertical=state.winner_vertical,
     )
-    # Estado para B moviendo
     bs_state = TwixtState(
         filas=state.filas,
         columnas=state.columnas,
@@ -143,5 +136,4 @@ def _mobility(state: TwixtState) -> tuple[int, int]:
 
 def _normalize_mobility(m: int) -> float:
     """Normaliza movilidad a ~[0,1] para pesos estables (div. por tamaño típico)."""
-    # Para tableros 20x20, movilidad típica útil está por debajo de ~100
     return min(1.0, m / 100.0)
